@@ -1,7 +1,32 @@
 #===============================================================================
-# Scrip to wrangle production data for sap of red and sugar maple trees at the 
-# Proctor Maple Research Center. More details on the study can be found in the 
-# README.md
+
+# This script imports maple sap production data for sap of red and sugar maple 
+# trees at the Proctor Maple Research Center (PMRC). More details on the study 
+# can be found in the repository's README.md file. The data is imported from the 
+# workbook: "PMRC Red v Sugar Records.xlsx".
+#
+# Workbook structure:
+#   1. "Number of taps"
+#      - Annual number of taps by treatment. Each tree received a single tap, 
+#        thus this is also the number of trees.
+#      - Columns: Number of taps, Year, Treatment, Comments.
+#      - Imported into the tibble `n_taps`.
+#
+#   2. Year-specific sheets ("2022", "2023", ..., "2027", etc.)
+#      - Individual sap collection records for each treatment (Red versus Sugar) 
+#        and date.
+#      - Columns: Date, Treatment, Volume (gal), SC (°Brix),
+#                 Vacuum ("Hg), Comments.
+#      - All yearly sheets are combined into a single tibble `d`.
+#
+# Variables:
+#   - Volume (gal): Sap volume collected (gallons).
+#   - SC (Brix): Sap solubles concentration (°Brix).
+#   - Vacuum ("Hg): Collection-system vacuum level (inches Hg).
+#
+# The import procedure automatically identifies and reads all sheets whose
+# names correspond to calendar years, allowing future years (e.g., 2027, 2028)
+# to be added without modifying the code. 
 #-------------------------------------------------------------------------------
 
 library(readxl)
